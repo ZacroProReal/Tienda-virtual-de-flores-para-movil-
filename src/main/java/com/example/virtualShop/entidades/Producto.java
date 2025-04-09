@@ -25,7 +25,6 @@ public class Producto {
     private String colorFlores;
     private boolean disponibilidad;
 
-
     @Lob
     @Column(name = "imagen")
     private byte[] imagen;

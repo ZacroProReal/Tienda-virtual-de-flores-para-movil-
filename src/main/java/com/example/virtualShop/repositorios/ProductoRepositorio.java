@@ -19,5 +19,4 @@ public interface ProductoRepositorio extends JpaRepository<Producto, Long> {
     Producto findByColorFlores (String colorFlores);
     Producto findByDisponibilidad(boolean disponibilidad);
 
-
 }

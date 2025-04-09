@@ -32,9 +32,19 @@ public class ProductoServicio {
             return productoDto;
         else return null;
     }
-    public List<Producto> obtenerTodos()
-    {
+    public List<Producto> obtenerTodos(){
         return productoRepositorio.findAll();
+    }
+    public Producto modificarProducto(Long id, Producto productoActualizado) {
+        Producto productoExistente = productoRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " + id));
+
+        productoExistente.setNombre(productoActualizado.getNombre());
+        productoExistente.setDescripcion(productoActualizado.getDescripcion());
+        productoExistente.setPrecio(productoActualizado.getPrecio());
+        productoExistente.setDisponibilidad(productoActualizado.isDisponibilidad());
+
+        return productoRepositorio.save(productoExistente);
     }
 }
 
