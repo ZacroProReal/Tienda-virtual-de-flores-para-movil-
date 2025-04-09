@@ -23,6 +23,7 @@ public class Producto {
     private BigDecimal precio;
     private Integer cantidadDisponible;
     private String colorFlores;
+    private boolean disponibilidad;
 
 
     @Lob

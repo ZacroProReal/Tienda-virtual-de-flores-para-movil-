@@ -6,6 +6,7 @@ import com.example.virtualShop.repositorios.ProductoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -16,9 +17,15 @@ public class ProductoServicio {
     public ProductoServicio(ProductoRepositorio docenteRepositorio) {
         this.productoRepositorio = docenteRepositorio;
     }
-    public ProductoDto crear(ProductoDto productoDto) {
+    public ProductoDto crear(ProductoDto productoDto) throws IOException {
         Producto producto = Producto.builder()
                 .nombre(productoDto.nombre())
+                .descripcion(productoDto.descripcion())
+                .precio(productoDto.precio())
+                .cantidadDisponible(productoDto.cantidadDisponible())
+                .colorFlores(productoDto.colorFlores())
+                .disponibilidad(productoDto.disponibilidad())
+                .imagen(productoDto.imagen() != null ? productoDto.imagen().getBytes() : null)
                 .build();
 
         if (productoRepositorio.save(producto).getId() > 0)
