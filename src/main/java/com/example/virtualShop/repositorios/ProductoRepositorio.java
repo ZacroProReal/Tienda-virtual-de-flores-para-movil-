@@ -16,8 +16,8 @@ public interface ProductoRepositorio extends JpaRepository<Producto, Long> {
     Producto findByNombre (String nombre);
     Producto findByPrecio (BigDecimal precio);
     Producto findByCantidadDisponible(Integer cantidadDisponible);
-    Producto findByColorFlores (LocalDate colorFlores);
-    Producto findByDisponibiliad (boolean disponibilidad);
+    Producto findByColorFlores (String colorFlores);
+    Producto findByDisponibilidad(boolean disponibilidad);
 
 
 }
