@@ -32,9 +32,6 @@ public class ProductoServicio {
             return productoDto;
         else return null;
     }
-    public List<Producto> obtenerTodos()
-    {
-        return productoRepositorio.findAll();
-    }
+
 }
 
