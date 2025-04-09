@@ -2,6 +2,7 @@ package com.example.virtualShop.entidades;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -18,4 +19,14 @@ public class Producto {
 
     @Column(unique = true)
     private String nombre;
+    private String descripcion;
+    private BigDecimal precio;
+    private Integer cantidadDisponible;
+    private String colorFlores;
+
+
+    @Lob
+    @Column(name = "imagen", columnDefinition = "LONGBLOB")
+    private byte[] imagen;
+
 }
