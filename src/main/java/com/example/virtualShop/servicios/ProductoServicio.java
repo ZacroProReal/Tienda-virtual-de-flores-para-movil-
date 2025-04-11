@@ -14,8 +14,8 @@ public class ProductoServicio {
     ProductoRepositorio productoRepositorio;
 
     @Autowired
-    public ProductoServicio(ProductoRepositorio docenteRepositorio) {
-        this.productoRepositorio = docenteRepositorio;
+    public ProductoServicio(ProductoRepositorio productoRepositorio) {
+        this.productoRepositorio = productoRepositorio;
     }
     public ProductoDto crear(ProductoDto productoDto) throws IOException {
         Producto producto = Producto.builder()
@@ -25,7 +25,7 @@ public class ProductoServicio {
                 .cantidadDisponible(productoDto.cantidadDisponible())
                 .colorFlores(productoDto.colorFlores())
                 .disponibilidad(productoDto.disponibilidad())
-                .imagen(productoDto.imagen() != null ? productoDto.imagen().getBytes() : null)
+                .imagen(productoDto.imagen())
                 .build();
 
         if (productoRepositorio.save(producto).getId() > 0)
