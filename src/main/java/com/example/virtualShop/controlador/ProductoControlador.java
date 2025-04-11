@@ -30,7 +30,7 @@ public class ProductoControlador {
         return productoServicio.obtenerTodos();
     }
 
-    @PostMapping("/modificar/{id}")
+    @PutMapping ("/modificar/{id}")
     public ResponseEntity<Producto> modificarProducto(
             @PathVariable Long id,
             @RequestBody Producto productoActualizado
