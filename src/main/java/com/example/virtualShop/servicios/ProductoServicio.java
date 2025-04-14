@@ -5,6 +5,7 @@ import com.example.virtualShop.entidades.Producto;
 import com.example.virtualShop.repositorios.ProductoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
@@ -43,8 +44,16 @@ public class ProductoServicio {
         productoExistente.setDescripcion(productoActualizado.getDescripcion());
         productoExistente.setPrecio(productoActualizado.getPrecio());
         productoExistente.setDisponibilidad(productoActualizado.isDisponibilidad());
+        productoExistente.setCantidadDisponible(productoActualizado.getCantidadDisponible());
+        productoExistente.setColorFlores(productoActualizado.getColorFlores());
+        productoExistente.setImagen(productoActualizado.getImagen());
 
         return productoRepositorio.save(productoExistente);
+
+    }
+    @Transactional
+    public Producto buscarNombre(String nombre){
+        return  productoRepositorio.findByNombre(nombre);
     }
 }
 

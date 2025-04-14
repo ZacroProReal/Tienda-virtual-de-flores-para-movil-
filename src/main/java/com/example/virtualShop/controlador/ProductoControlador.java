@@ -17,7 +17,6 @@ import java.util.List;
 @RequestMapping("/productos")
 @CrossOrigin(origins = "*")
 
-@Controller
 public class ProductoControlador {
     ProductoServicio productoServicio;
 
@@ -38,6 +37,11 @@ public class ProductoControlador {
         Producto productoModificado = productoServicio.modificarProducto(id, productoActualizado);
         return ResponseEntity.ok(productoModificado);
     }
+    @GetMapping("/buscar/{nombre}")
+    public Producto buscarNombre(@PathVariable String nombre){
+        return productoServicio.buscarNombre(nombre);
+    }
+
 }
 
 
