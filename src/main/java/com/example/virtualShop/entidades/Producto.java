@@ -27,7 +27,7 @@ public class Producto {
 
 
     @Lob
-    @Column(name = "imagen", columnDefinition = "LONGBLOB")
+    @Column(name = "imagen")
     private byte[] imagen;
 
 }
