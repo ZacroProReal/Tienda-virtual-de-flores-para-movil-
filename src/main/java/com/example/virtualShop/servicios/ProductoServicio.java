@@ -14,8 +14,8 @@ public class ProductoServicio {
     ProductoRepositorio productoRepositorio;
 
     @Autowired
-    public ProductoServicio(ProductoRepositorio docenteRepositorio) {
-        this.productoRepositorio = docenteRepositorio;
+    public ProductoServicio(ProductoRepositorio productoRepositorio) {
+        this.productoRepositorio = productoRepositorio;
     }
     public ProductoDto crear(ProductoDto productoDto) throws IOException {
         Producto producto = Producto.builder()
@@ -25,16 +25,26 @@ public class ProductoServicio {
                 .cantidadDisponible(productoDto.cantidadDisponible())
                 .colorFlores(productoDto.colorFlores())
                 .disponibilidad(productoDto.disponibilidad())
-                .imagen(productoDto.imagen() != null ? productoDto.imagen().getBytes() : null)
+                .imagen(productoDto.imagen())
                 .build();
 
         if (productoRepositorio.save(producto).getId() > 0)
             return productoDto;
         else return null;
     }
-    public List<Producto> obtenerTodos()
-    {
+    public List<Producto> obtenerTodos(){
         return productoRepositorio.findAll();
+    }
+    public Producto modificarProducto(Long id, Producto productoActualizado) {
+        Producto productoExistente = productoRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " + id));
+
+        productoExistente.setNombre(productoActualizado.getNombre());
+        productoExistente.setDescripcion(productoActualizado.getDescripcion());
+        productoExistente.setPrecio(productoActualizado.getPrecio());
+        productoExistente.setDisponibilidad(productoActualizado.isDisponibilidad());
+
+        return productoRepositorio.save(productoExistente);
     }
 }
 

@@ -11,5 +11,5 @@ public record ProductoDto (@NotBlank String nombre,
                            Integer cantidadDisponible,
                            String colorFlores,
                            boolean disponibilidad,
-                           MultipartFile imagen){
+                           byte[] imagen){
 }

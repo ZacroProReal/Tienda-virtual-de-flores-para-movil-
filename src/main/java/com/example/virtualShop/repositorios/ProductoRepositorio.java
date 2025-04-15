@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+
 
 @Repository
 public interface ProductoRepositorio extends JpaRepository<Producto, Long> {
@@ -18,6 +18,5 @@ public interface ProductoRepositorio extends JpaRepository<Producto, Long> {
     Producto findByCantidadDisponible(Integer cantidadDisponible);
     Producto findByColorFlores (String colorFlores);
     Producto findByDisponibilidad(boolean disponibilidad);
-
 
 }
