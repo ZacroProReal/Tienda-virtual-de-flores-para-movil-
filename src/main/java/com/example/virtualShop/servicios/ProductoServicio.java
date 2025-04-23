@@ -2,6 +2,7 @@ package com.example.virtualShop.servicios;
 
 import com.example.virtualShop.dto.ProductoDto;
 import com.example.virtualShop.entidades.Producto;
+import com.example.virtualShop.entidades.Usuario;
 import com.example.virtualShop.repositorios.ProductoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,12 +14,14 @@ import java.util.List;
 @Service
 public class ProductoServicio {
     ProductoRepositorio productoRepositorio;
-
+    Usuario usuario;
     @Autowired
     public ProductoServicio(ProductoRepositorio productoRepositorio) {
+
         this.productoRepositorio = productoRepositorio;
     }
     public ProductoDto crear(ProductoDto productoDto) throws IOException {
+        //if (usuario.getRol() != 1) {throw new SecurityException("No tienes permiso para agregar productos.");}
         Producto producto = Producto.builder()
                 .nombre(productoDto.nombre())
                 .descripcion(productoDto.descripcion())
@@ -37,6 +40,7 @@ public class ProductoServicio {
         return productoRepositorio.findAll();
     }
     public Producto modificarProducto(Long id, Producto productoActualizado) {
+        //if (usuario.getRol() != 1) {throw new SecurityException("No tienes permiso para modificar productos.");}
         Producto productoExistente = productoRepositorio.findById(id)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " + id));
 
@@ -49,7 +53,6 @@ public class ProductoServicio {
         productoExistente.setImagen(productoActualizado.getImagen());
 
         return productoRepositorio.save(productoExistente);
-
     }
     @Transactional
     public Producto buscarNombre(String nombre){
