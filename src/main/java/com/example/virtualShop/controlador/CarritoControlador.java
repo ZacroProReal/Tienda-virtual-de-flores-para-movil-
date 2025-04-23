@@ -32,6 +32,12 @@ public class CarritoControlador {
         return ResponseEntity.ok("Producto agregado correctamente al carrito");
     }
 
+    @GetMapping("/productos/{usuarioId}")
+    public ResponseEntity<List<ItemCarritoDto>> obtenerProductos(@PathVariable Long usuarioId) {
+        List<ItemCarritoDto> itemCarrito = carritoServicio.obtenerProductosDelCarrito(usuarioId);
+        return ResponseEntity.ok(itemCarrito);
+    }
+
 }
 
 

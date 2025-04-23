@@ -56,6 +56,30 @@ public class CarritoServicio {
 
         itemCarritoRepositorio.save(item);
     }
+    @Transactional
+    public List<ItemCarritoDto> obtenerProductosDelCarrito(Long usuarioId) {
+        Usuario usuario = usuarioRepositorio.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        Carrito carrito = usuario.getCarrito();
+        if (carrito == null) return List.of();
+
+        return carrito.getItems().stream()
+                .map(item -> new ItemCarritoDto(
+                        item.getId(),
+                        item.getCantidad(),
+                        new ProductoDto(
+                                item.getProducto().getNombre(),
+                                item.getProducto().getDescripcion(),
+                                item.getProducto().getPrecio(),
+                                item.getProducto().getCantidadDisponible(),
+                                item.getProducto().getColorFlores(),
+                                item.getProducto().isDisponibilidad(),
+                                item.getProducto().getImagen()
+                        )
+                ))
+                .collect(Collectors.toList());
+    }
 
 }
 
