@@ -1,7 +1,7 @@
 package com.example.virtualShop.entidades;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Builder
 //@JsonIgnoreProperties({"carrito"})  // Si quieres ignorar la propiedad carrito aquí también
+
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -30,7 +31,6 @@ public class Usuario {
     @Builder.Default
     private Integer rol = 2;
 
-    @JsonManagedReference  // Gestionar la serialización de la relación
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Carrito carrito;
 
