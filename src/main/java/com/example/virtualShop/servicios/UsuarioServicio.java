@@ -52,4 +52,22 @@ public class UsuarioServicio {
         return usuarioRepositorio.findAll();
     }
 
+    public Usuario modificarUsuario(Long id, Usuario usuarioActualizado) {
+        Usuario usuarioExistente = usuarioRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + id));
+
+        usuarioExistente.setNombre(usuarioActualizado.getNombre());
+        usuarioExistente.setApellido(usuarioActualizado.getApellido());
+        usuarioExistente.setTelefono(usuarioActualizado.getTelefono());
+        usuarioExistente.setCorreo(usuarioActualizado.getCorreo());
+        usuarioExistente.setContrasena(usuarioActualizado.getContrasena());
+        usuarioExistente.setFechaNacimiento(usuarioActualizado.getFechaNacimiento());
+
+        return usuarioRepositorio.save(usuarioExistente);
+    }
+
+    public Usuario buscarUsuario(String nombre) {
+        return usuarioRepositorio.findByNombre(nombre);
+    }
+
 }

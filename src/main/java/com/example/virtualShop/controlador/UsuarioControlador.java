@@ -26,6 +26,18 @@ public class UsuarioControlador {
     public List<Usuario> obtenerTodos(){
         return usuarioServicio.listarUsuarios();
     }
+    @PutMapping ("/modificar/{id}")
+    public ResponseEntity<Usuario> modificarUsuario(
+            @PathVariable Long id,
+            @RequestBody Usuario usuarioActualizado
+    ) {
+        Usuario usuarioModificado = usuarioServicio.modificarUsuario(id, usuarioActualizado);
+        return ResponseEntity.ok(usuarioModificado);
+    }
+    @GetMapping("/buscar/{nombre}")
+    public Usuario buscarNombre(@PathVariable String nombre){
+        return usuarioServicio.buscarUsuario(nombre);
+    }
 
 }
 
