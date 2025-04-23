@@ -1,7 +1,7 @@
 package com.example.virtualShop.dto;
 
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
-import org.springframework.web.multipart.MultipartFile;
+
 
 import java.math.BigDecimal;
 
