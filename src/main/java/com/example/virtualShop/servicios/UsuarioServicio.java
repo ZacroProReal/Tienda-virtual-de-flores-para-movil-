@@ -31,7 +31,7 @@ public class UsuarioServicio {
                 .correo(usuarioDto.correo())
                 .contrasena(usuarioDto.contrasena())
                 .fechaNacimiento(usuarioDto.fechaNacimiento())
-                .rol(2) // Aseguramos que es un usuario con rol 2
+                .rol(2)
                 .build();
 
         Usuario usuarioGuardado = usuarioRepositorio.save(usuario);

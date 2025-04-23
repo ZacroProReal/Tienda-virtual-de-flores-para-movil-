@@ -15,6 +15,8 @@ import java.util.List;
 public class ProductoServicio {
     ProductoRepositorio productoRepositorio;
     Usuario usuario;
+
+
     @Autowired
     public ProductoServicio(ProductoRepositorio productoRepositorio) {
 

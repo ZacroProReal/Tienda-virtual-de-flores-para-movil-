@@ -33,5 +33,5 @@ public class Carrito {
     private Usuario usuario;
 
     @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Producto> productos = new ArrayList<>();
+    private List<ItemCarrito> items = new ArrayList<>();
 }

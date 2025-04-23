@@ -1,5 +1,5 @@
 package com.example.virtualShop.entidades;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -25,7 +25,6 @@ public class Producto {
     private boolean disponibilidad;
 
     @Lob
-    @JsonIgnore
     @Column(name = "imagen")
     private byte[] imagen;
 
