@@ -6,10 +6,10 @@ import java.time.LocalDate;
 
 
 public record UsuarioDto(@NotBlank String nombre,
-                         String apellido,
-                         String telefono,
-                         String correo,
-                         String contrasena,
-                         LocalDate fechaNacimiento
+                         @NotBlank String apellido,
+                         @NotBlank String telefono,
+                         @NotBlank String correo,
+                         @NotBlank String contrasena,
+                         @NotBlank LocalDate fechaNacimiento
 ) {
 }

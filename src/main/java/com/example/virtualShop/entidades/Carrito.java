@@ -32,6 +32,7 @@ public class Carrito {
     @JoinColumn(name = "usuario_id", unique = true)
     private Usuario usuario;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemCarrito> items = new ArrayList<>();
 }

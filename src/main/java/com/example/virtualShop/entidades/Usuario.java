@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @Builder
-//@JsonIgnoreProperties({"carrito"})  // Si quieres ignorar la propiedad carrito aquí también
 
 public class Usuario {
     @Id
