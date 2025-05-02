@@ -2,7 +2,6 @@ package com.example.virtualShop.controlador;
 
 
 import com.example.virtualShop.dto.ItemCarritoDto;
-import com.example.virtualShop.entidades.ItemCarrito;
 import com.example.virtualShop.servicios.CarritoServicio;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

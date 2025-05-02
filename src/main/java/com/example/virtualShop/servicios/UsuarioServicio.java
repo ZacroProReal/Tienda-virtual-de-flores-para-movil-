@@ -6,6 +6,7 @@ import com.example.virtualShop.entidades.Usuario;
 import com.example.virtualShop.repositorios.CarritoRepositorio;
 import com.example.virtualShop.repositorios.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,20 +17,24 @@ public class UsuarioServicio {
 
     private final UsuarioRepositorio usuarioRepositorio;
     private final CarritoRepositorio carritoRepositorio;
+    private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public UsuarioServicio(UsuarioRepositorio usuarioRepositorio, CarritoRepositorio carritoRepositorio) {
+    public UsuarioServicio(UsuarioRepositorio usuarioRepositorio, CarritoRepositorio carritoRepositorio, PasswordEncoder passwordEncoder) {
         this.usuarioRepositorio = usuarioRepositorio;
         this.carritoRepositorio = carritoRepositorio;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UsuarioDto registrarUsuario(UsuarioDto usuarioDto) throws IOException {
+        String contrasenaCodificada = passwordEncoder.encode(usuarioDto.contrasena());
         Usuario usuario = Usuario.builder()
                 .nombre(usuarioDto.nombre())
                 .apellido(usuarioDto.apellido())
                 .telefono(usuarioDto.telefono())
                 .correo(usuarioDto.correo())
-                .contrasena(usuarioDto.contrasena())
+                .contrasena(contrasenaCodificada)
                 .fechaNacimiento(usuarioDto.fechaNacimiento())
                 .rol(2)
                 .build();
@@ -53,6 +58,7 @@ public class UsuarioServicio {
     }
 
     public Usuario modificarUsuario(Long id, Usuario usuarioActualizado) {
+        String contrasenaCodificada = passwordEncoder.encode(usuarioActualizado.getContrasena());
         Usuario usuarioExistente = usuarioRepositorio.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + id));
 
@@ -60,7 +66,7 @@ public class UsuarioServicio {
         usuarioExistente.setApellido(usuarioActualizado.getApellido());
         usuarioExistente.setTelefono(usuarioActualizado.getTelefono());
         usuarioExistente.setCorreo(usuarioActualizado.getCorreo());
-        usuarioExistente.setContrasena(usuarioActualizado.getContrasena());
+        usuarioExistente.setContrasena(contrasenaCodificada);
         usuarioExistente.setFechaNacimiento(usuarioActualizado.getFechaNacimiento());
 
         return usuarioRepositorio.save(usuarioExistente);
