@@ -37,6 +37,7 @@ public class UsuarioServicio {
                 .contrasena(contrasenaCodificada)
                 .fechaNacimiento(usuarioDto.fechaNacimiento())
                 .rol(2)
+                .autenticado(false)
                 .build();
 
         Usuario usuarioGuardado = usuarioRepositorio.save(usuario);
