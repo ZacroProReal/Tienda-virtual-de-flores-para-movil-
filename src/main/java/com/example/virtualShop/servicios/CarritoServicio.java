@@ -99,4 +99,38 @@ public class CarritoServicio {
                 ))
                 .collect(Collectors.toList());
     }
+    @Transactional
+    public void eliminarProducto(Long usuarioId, Long productoId) {
+        Usuario usuario = usuarioRepositorio.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        Carrito carrito = usuario.getCarrito();
+        if (carrito == null) {
+            throw new RuntimeException("El carrito no existe");
+        }
+
+        ItemCarrito item = carrito.getItems().stream()
+                .filter(i -> i.getProducto().getId().equals(productoId))
+                .findFirst()
+                .orElse(null);
+
+        if (item == null) {
+            throw new RuntimeException("El producto no se encuentra en el carrito");
+        }
+
+        if (item.getCantidad() > 1) {
+            item.setCantidad(item.getCantidad() - 1);
+            itemCarritoRepositorio.save(item);
+        } else {
+            itemCarritoRepositorio.delete(item);
+        }
+
+        // Actualizar cantidad general del carrito
+        int total = carrito.getItems().stream()
+                .mapToInt(ItemCarrito::getCantidad)
+                .sum();
+        carrito.setCantidadGeneralProduc(total);
+        carritoRepositorio.save(carrito);
+    }
+
 }
