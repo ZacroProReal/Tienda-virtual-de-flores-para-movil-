@@ -36,6 +36,15 @@ public class CarritoControlador {
         List<ItemCarritoDto> itemCarrito = carritoServicio.obtenerProductosDelCarrito(usuarioId);
         return ResponseEntity.ok(itemCarrito);
     }
+    @DeleteMapping("/eliminar-producto/{usuarioId}/{productoId}")
+    public ResponseEntity<String> eliminarProductoDelCarrito(
+            @PathVariable Long usuarioId,
+            @PathVariable Long productoId
+    ) {
+        carritoServicio.eliminarProducto(usuarioId, productoId);
+        return ResponseEntity.ok("Producto eliminado correctamente del carrito");
+    }
+
 
 }
 
