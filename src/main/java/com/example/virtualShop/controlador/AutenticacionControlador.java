@@ -32,7 +32,7 @@ public class AutenticacionControlador {
             respuesta.put("token", token);
             return ResponseEntity.ok(respuesta);
         } else {
-            respuesta.put("mensaje", "Credenciales inválidas");
+            respuesta.put("mensaje", "Credenciales inválidas o usuario no autenticado");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(respuesta);
         }
     }

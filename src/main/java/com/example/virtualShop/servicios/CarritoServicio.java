@@ -1,26 +1,24 @@
 package com.example.virtualShop.servicios;
 
-
 import com.example.virtualShop.dto.ItemCarritoDto;
 import com.example.virtualShop.dto.ProductoDto;
-import com.example.virtualShop.entidades.Carrito;
-import com.example.virtualShop.entidades.ItemCarrito;
-import com.example.virtualShop.entidades.Producto;
-import com.example.virtualShop.entidades.Usuario;
+import com.example.virtualShop.entidades.*;
+//import com.example.virtualShop.entidades.EstadoCarrito;
 import com.example.virtualShop.repositorios.CarritoRepositorio;
 import com.example.virtualShop.repositorios.ItemCarritoRepositorio;
 import com.example.virtualShop.repositorios.ProductoRepositorio;
 import com.example.virtualShop.repositorios.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class CarritoServicio {
+
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
 
@@ -32,7 +30,6 @@ public class CarritoServicio {
 
     @Autowired
     private ItemCarritoRepositorio itemCarritoRepositorio;
-
 
     @Transactional
     public void agregarProducto(Long usuarioId, Long productoId) {
@@ -46,16 +43,38 @@ public class CarritoServicio {
         if (carrito == null) {
             carrito = new Carrito();
             carrito.setUsuario(usuario);
+            carrito.setFechaCreacion(LocalDateTime.now());
+            carrito.setEstado(EstadoCarrito.ACTIVO);
+            carrito.setCantidadGeneralProduc(0);
             carrito = carritoRepositorio.save(carrito);
         }
 
-        ItemCarrito item = new ItemCarrito();
-        item.setCarrito(carrito);
-        item.setProducto(producto);
-        item.setCantidad(1);
+        // Verifica si el producto ya existe en el carrito
+        ItemCarrito itemExistente = carrito.getItems().stream()
+                .filter(i -> i.getProducto().getId().equals(productoId))
+                .findFirst()
+                .orElse(null);
 
-        itemCarritoRepositorio.save(item);
+        if (itemExistente != null) {
+            itemExistente.setCantidad(itemExistente.getCantidad() + 1);
+            itemCarritoRepositorio.save(itemExistente);
+        } else {
+            ItemCarrito item = new ItemCarrito();
+            item.setCarrito(carrito);
+            item.setProducto(producto);
+            item.setCantidad(1);
+            itemCarritoRepositorio.save(item);
+        }
+
+        // Actualizar la cantidad general de productos
+        int total = carrito.getItems().stream()
+                .mapToInt(ItemCarrito::getCantidad)
+                .sum();
+
+        carrito.setCantidadGeneralProduc(total);
+        carritoRepositorio.save(carrito);
     }
+
     @Transactional
     public List<ItemCarritoDto> obtenerProductosDelCarrito(Long usuarioId) {
         Usuario usuario = usuarioRepositorio.findById(usuarioId)
@@ -80,6 +99,4 @@ public class CarritoServicio {
                 ))
                 .collect(Collectors.toList());
     }
-
 }
-

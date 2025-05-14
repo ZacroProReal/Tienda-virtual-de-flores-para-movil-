@@ -26,7 +26,6 @@ public class Usuario {
     private String correo;
     private String contrasena;
     private LocalDate fechaNacimiento;
-    private boolean autenticado;
 
     @Builder.Default
     private Integer rol = 2;
