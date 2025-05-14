@@ -34,6 +34,12 @@ public class UsuarioControlador {
         Usuario usuarioModificado = usuarioServicio.modificarUsuario(id, usuarioActualizado);
         return ResponseEntity.ok(usuarioModificado);
     }
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<String> eliminarUsuario(@PathVariable Long id) {
+        usuarioServicio.eliminarUsuario(id);
+        return ResponseEntity.ok("Usuario eliminado con éxito");
+    }
+
     @GetMapping("/buscar/{nombre}")
     public Usuario buscarNombre(@PathVariable String nombre){
         return usuarioServicio.buscarUsuario(nombre);

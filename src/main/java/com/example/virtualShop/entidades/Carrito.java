@@ -24,7 +24,10 @@ public class Carrito {
 
     @JsonBackReference  // Evita la serialización recursiva
     private LocalDateTime fechaCreacion;
-    private String estado;
+
+    @Enumerated(EnumType.STRING)
+    private EstadoCarrito estado;
+
     private Integer cantidadGeneralProduc;
 
     @JsonIgnore

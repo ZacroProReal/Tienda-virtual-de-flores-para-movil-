@@ -2,6 +2,7 @@ package com.example.virtualShop.servicios;
 
 import com.example.virtualShop.dto.UsuarioDto;
 import com.example.virtualShop.entidades.Carrito;
+import com.example.virtualShop.entidades.EstadoCarrito;
 import com.example.virtualShop.entidades.Usuario;
 import com.example.virtualShop.repositorios.CarritoRepositorio;
 import com.example.virtualShop.repositorios.UsuarioRepositorio;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -37,7 +39,6 @@ public class UsuarioServicio {
                 .contrasena(contrasenaCodificada)
                 .fechaNacimiento(usuarioDto.fechaNacimiento())
                 .rol(2)
-                .autenticado(false)
                 .build();
 
         Usuario usuarioGuardado = usuarioRepositorio.save(usuario);
@@ -46,6 +47,9 @@ public class UsuarioServicio {
             if (usuarioGuardado.getRol() == 2) {
                 Carrito carrito = Carrito.builder()
                         .usuario(usuarioGuardado)
+                        .fechaCreacion(LocalDateTime.now())
+                        .estado(EstadoCarrito.ACTIVO)
+                        .cantidadGeneralProduc(0)
                         .build();
                 carritoRepositorio.save(carrito);
             }
@@ -56,6 +60,11 @@ public class UsuarioServicio {
     }
     public List<Usuario> listarUsuarios() {
         return usuarioRepositorio.findAll();
+    }
+    public void eliminarUsuario(Long id) {
+        Usuario usuario = usuarioRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + id));
+        usuarioRepositorio.delete(usuario);
     }
 
     public Usuario modificarUsuario(Long id, Usuario usuarioActualizado) {
