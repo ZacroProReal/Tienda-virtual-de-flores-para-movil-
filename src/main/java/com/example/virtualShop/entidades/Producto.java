@@ -1,12 +1,11 @@
 package com.example.virtualShop.entidades;
+
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Entity
-@Table (name = "docentes")
+@Table (name = "productos")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -23,10 +22,14 @@ public class Producto {
     private BigDecimal precio;
     private Integer cantidadDisponible;
     private String colorFlores;
-
+    private boolean disponibilidad;
 
     @Lob
-    @Column(name = "imagen", columnDefinition = "LONGBLOB")
+    @Column(name = "imagen")
     private byte[] imagen;
 
+    // Relación con el carrito
+    @ManyToOne
+    @JoinColumn(name = "carrito_id")
+    private Carrito carrito;
 }
