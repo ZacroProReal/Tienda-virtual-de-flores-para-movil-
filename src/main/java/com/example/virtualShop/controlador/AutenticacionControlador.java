@@ -36,5 +36,29 @@ public class AutenticacionControlador {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(respuesta);
         }
     }
+    @PostMapping("/solicitar-restauracion")
+    public ResponseEntity<Map<String, String>> solicitarRestauracion(@RequestBody Map<String, String> body) {
+        String correo = body.get("correo");
+        String token = autenticacionServicio.solicitarTokenRestauracion(correo);
+
+        // Enviar el link con token por email (aquí solo devuelvo el link para pruebas)
+        String link = "http://127.0.0.1:8862/autenticacion/restaurar?token=" + token;
+
+        Map<String, String> respuesta = new HashMap<>();
+        respuesta.put("mensaje", "Se ha enviado un correo para restaurar la cuenta");
+        respuesta.put("link", link);  // En producción no envíes esto, solo el email
+
+        return ResponseEntity.ok(respuesta);
+    }
+
+    @GetMapping("/restaurar")
+    public ResponseEntity<Map<String, String>> restaurarCuenta(@RequestParam String token) {
+        autenticacionServicio.restaurarCuentaConToken(token);
+
+        Map<String, String> respuesta = new HashMap<>();
+        respuesta.put("mensaje", "Cuenta restaurada exitosamente");
+        return ResponseEntity.ok(respuesta);
+    }
+
 }
 

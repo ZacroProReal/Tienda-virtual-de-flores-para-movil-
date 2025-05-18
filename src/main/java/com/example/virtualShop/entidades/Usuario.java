@@ -25,6 +25,8 @@ public class Usuario {
     private String telefono;
     private String contrasena;
 
+    @Enumerated(EnumType.STRING)
+    private EstadoUsuario estado;
 
     @Column(unique = true)
     private String correo;

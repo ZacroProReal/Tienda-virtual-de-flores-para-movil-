@@ -3,6 +3,7 @@ package com.example.virtualShop.servicios;
 import com.example.virtualShop.dto.UsuarioDto;
 import com.example.virtualShop.entidades.Carrito;
 import com.example.virtualShop.entidades.EstadoCarrito;
+import com.example.virtualShop.entidades.EstadoUsuario;
 import com.example.virtualShop.entidades.Usuario;
 import com.example.virtualShop.repositorios.CarritoRepositorio;
 import com.example.virtualShop.repositorios.UsuarioRepositorio;
@@ -13,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.example.virtualShop.entidades.EstadoUsuario.ACTIVO;
+import static com.example.virtualShop.entidades.EstadoUsuario.ELIMINADO;
 
 @Service
 public class UsuarioServicio {
@@ -43,6 +47,7 @@ public class UsuarioServicio {
                 .correo(usuarioDto.correo())
                 .contrasena(contrasenaCodificada)
                 .fechaNacimiento(usuarioDto.fechaNacimiento())
+                .estado(ACTIVO)
                 .rol(2)
                 .build();
 
@@ -64,13 +69,13 @@ public class UsuarioServicio {
             return null;
         }
     }
-    public List<Usuario> listarUsuarios() {
-        return usuarioRepositorio.findAll();
-    }
-    public void eliminarUsuario(Long id) {
-        Usuario usuario = usuarioRepositorio.findById(id)
+    public Usuario eliminarUsuario(Long id) {
+        Usuario usuarioBorrar = usuarioRepositorio.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + id));
-        usuarioRepositorio.delete(usuario);
+
+        usuarioBorrar.setEstado(EstadoUsuario.ELIMINADO);
+
+        return usuarioRepositorio.save(usuarioBorrar);
     }
 
     public Usuario modificarUsuario(Long id, Usuario usuarioActualizado) {
@@ -82,14 +87,21 @@ public class UsuarioServicio {
         usuarioExistente.setApellido(usuarioActualizado.getApellido());
         usuarioExistente.setTelefono(usuarioActualizado.getTelefono());
         usuarioExistente.setCorreo(usuarioActualizado.getCorreo());
+        usuarioExistente.setEstado(EstadoUsuario.MODIFICADO);
         usuarioExistente.setContrasena(contrasenaCodificada);
         usuarioExistente.setFechaNacimiento(usuarioActualizado.getFechaNacimiento());
 
         return usuarioRepositorio.save(usuarioExistente);
     }
 
-    public Usuario buscarUsuario(String nombre) {
-        return usuarioRepositorio.findByNombre(nombre);
+    public List<Usuario> listarUsuarios() {
+        List<EstadoUsuario> estadosPermitidos = List.of(EstadoUsuario.ACTIVO, EstadoUsuario.MODIFICADO);
+        return usuarioRepositorio.findByEstadoIn(estadosPermitidos);
     }
 
+    public Usuario buscarUsuario(String nombre) {
+        // Buscar usuario por nombre y estado ACTIVO
+        List<EstadoUsuario> estadosPermitidos = List.of(EstadoUsuario.ACTIVO, EstadoUsuario.MODIFICADO);
+        return usuarioRepositorio.findByNombreAndEstadoIn(nombre, estadosPermitidos);
+    }
 }
