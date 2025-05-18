@@ -18,6 +18,7 @@ public class Producto {
 
     @Column(unique = true)
     private String nombre;
+
     private String descripcion;
     private BigDecimal precio;
     private Integer cantidadDisponible;
@@ -28,8 +29,4 @@ public class Producto {
     @Column(name = "imagen")
     private byte[] imagen;
 
-    // Relación con el carrito
-    @ManyToOne
-    @JoinColumn(name = "carrito_id")
-    private Carrito carrito;
 }

@@ -29,13 +29,13 @@ public class Carrito {
     private EstadoCarrito estado;
 
     private Integer cantidadGeneralProduc;
+    private Integer costoGenearl;
 
     @JsonIgnore
     @OneToOne
     @JoinColumn(name = "usuario_id", unique = true)
     private Usuario usuario;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     private List<ItemCarrito> items = new ArrayList<>();
 }

@@ -19,12 +19,15 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(unique = true)
+
     private String nombre;
     private String apellido;
     private String telefono;
-    private String correo;
     private String contrasena;
+
+
+    @Column(unique = true)
+    private String correo;
     private LocalDate fechaNacimiento;
 
     @Builder.Default
