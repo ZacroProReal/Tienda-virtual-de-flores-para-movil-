@@ -13,16 +13,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
+@CrossOrigin(origins = "*")
 public class UsuarioControlador {
 
     @Autowired
     private UsuarioServicio usuarioServicio;
 
-    @PostMapping("/")
+    @PostMapping("/registrar")
     public UsuarioDto crear(@RequestBody UsuarioDto usuario) throws IOException {
         return usuarioServicio.registrarUsuario(usuario);
     }
-    @GetMapping("/")
+    @GetMapping("/listar")
     public List<Usuario> obtenerTodos(){
         return usuarioServicio.listarUsuarios();
     }

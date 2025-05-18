@@ -30,6 +30,11 @@ public class UsuarioServicio {
     }
 
     public UsuarioDto registrarUsuario(UsuarioDto usuarioDto) throws IOException {
+
+        if (usuarioRepositorio.existsByCorreo(usuarioDto.correo())) {
+            throw new IllegalArgumentException("Ya existe un usuario con ese correo.");
+        }
+
         String contrasenaCodificada = passwordEncoder.encode(usuarioDto.contrasena());
         Usuario usuario = Usuario.builder()
                 .nombre(usuarioDto.nombre())
@@ -50,6 +55,7 @@ public class UsuarioServicio {
                         .fechaCreacion(LocalDateTime.now())
                         .estado(EstadoCarrito.ACTIVO)
                         .cantidadGeneralProduc(0)
+                        .costoGenearl(0)
                         .build();
                 carritoRepositorio.save(carrito);
             }

@@ -23,6 +23,10 @@ public class ProductoServicio {
         this.productoRepositorio = productoRepositorio;
     }
     public ProductoDto crear(ProductoDto productoDto) throws IOException {
+        // Verifica si ya existe un producto con el mismo nombre
+        if (productoRepositorio.existsByNombre(productoDto.nombre())) {
+            throw new IllegalArgumentException("Ya existe un producto con ese nombre.");
+        }
         //if (usuario.getRol() != 1) {throw new SecurityException("No tienes permiso para agregar productos.");}
         Producto producto = Producto.builder()
                 .nombre(productoDto.nombre())
