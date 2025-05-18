@@ -16,9 +16,6 @@ import java.util.stream.Collectors;
 public class FacturaServicio {
 
     @Autowired
-    private UsuarioRepositorio usuarioRepositorio;
-
-    @Autowired
     private CarritoRepositorio carritoRepositorio;
 
     @Autowired
@@ -27,13 +24,9 @@ public class FacturaServicio {
     @Autowired
     private ItemFacturaRepositorio itemFacturaRepositorio;
 
-    @Transactional
-    public Factura generarFacturaDesdeCarrito(Long usuarioId, Long carritoId) {
-        Usuario usuario = usuarioRepositorio.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        Carrito carrito = carritoRepositorio.findById(carritoId)
-                .orElseThrow(() -> new RuntimeException("Carrito no encontrado"));
+    public Factura generarFacturaDesdeCarrito(Usuario usuario) {
+        Carrito carrito = carritoRepositorio.findByUsuario(usuario)
+                .orElseThrow(() -> new RuntimeException("Carrito no encontrado para el usuario"));
 
         if (carrito.getItems() == null || carrito.getItems().isEmpty()) {
             throw new RuntimeException("El carrito está vacío, no se puede generar la factura.");
@@ -41,7 +34,7 @@ public class FacturaServicio {
 
         // Crear la factura
         Factura factura = new Factura();
-        factura.setEmisorNombre("Florezza \uD83D\uDC90 S.A.");
+        factura.setEmisorNombre("Florezza 🌐 S.A.");
         factura.setEmisorNif("900123456-7");
         factura.setEmisorDireccion("Cra 12 # 45-67, Bogotá D.C.");
 
@@ -49,22 +42,18 @@ public class FacturaServicio {
         factura.setFechaEmision(LocalDateTime.now());
         factura.setNumeroFactura(UUID.randomUUID().toString());
 
-        // Subtotal desde el carrito (asumiendo que es BigDecimal)
         BigDecimal subtotal = BigDecimal.valueOf(carrito.getCostoGenearl());
         factura.setSubtotal(subtotal);
 
-        // Impuesto del 19%
         BigDecimal impuestos = subtotal.multiply(BigDecimal.valueOf(0.19));
         factura.setImpuestos(impuestos);
 
-        // Total
         BigDecimal total = subtotal.add(impuestos);
         factura.setTotal(total);
 
         factura.setFormaDePago("Pago en línea");
         factura.setCondicionesVenta("Contado");
 
-        // Crear items factura
         List<ItemFactura> items = carrito.getItems().stream()
                 .map(itemCarrito -> {
                     Producto producto = itemCarrito.getProducto();
@@ -85,5 +74,9 @@ public class FacturaServicio {
         factura.setItems(items);
 
         return facturaRepositorio.save(factura);
+    }public Factura obtenerUltimaFacturaPorUsuario(Usuario usuario) {
+        return facturaRepositorio.findTopByReceptorOrderByFechaEmisionDesc(usuario)
+                .orElse(null);
     }
+
 }

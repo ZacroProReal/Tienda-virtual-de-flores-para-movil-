@@ -1,7 +1,5 @@
 package com.example.virtualShop.entidades;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -30,6 +28,7 @@ public class Usuario {
 
     @Column(unique = true)
     private String correo;
+
     private LocalDate fechaNacimiento;
 
     @Builder.Default

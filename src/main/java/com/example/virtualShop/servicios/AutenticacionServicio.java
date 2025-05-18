@@ -8,6 +8,7 @@ import com.example.virtualShop.seguridad.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AutenticacionServicio {
@@ -22,7 +23,7 @@ public class AutenticacionServicio {
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
     }
-
+    @Transactional
     public String autenticarYGenerarToken(String correo, String contrasena) {
         Usuario usuario = usuarioRepositorio.findByCorreo(correo);
         if (usuario != null) {
@@ -36,8 +37,7 @@ public class AutenticacionServicio {
         }
         return null;
     }
-
-
+    @Transactional
     public String solicitarTokenRestauracion(String correo) {
         Usuario usuario = usuarioRepositorio.findByCorreo(correo);
         if (usuario == null) {
@@ -51,7 +51,7 @@ public class AutenticacionServicio {
         // Generar token JWT para restauración
         return jwtUtil.generarTokenRestauracion(correo);
     }
-
+    @Transactional
     public void restaurarCuentaConToken(String token) {
         if (!jwtUtil.validarTokenRestauracion(token)) {
             throw new IllegalArgumentException("Token de restauración inválido o expirado");
@@ -71,4 +71,15 @@ public class AutenticacionServicio {
         usuario.setEstado(EstadoUsuario.ACTIVO);
         usuarioRepositorio.save(usuario);
     }
+    @Transactional
+    public Usuario obtenerUsuarioDesdeToken(String token) {
+        String tokenLimpio = token.replace("Bearer ", "").trim();
+        String correo = jwtUtil.extraerCorreo(tokenLimpio);
+        Usuario usuario = usuarioRepositorio.findByCorreo(correo);
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuario no encontrado con el token");
+        }
+        return usuario;
+    }
+
 }
