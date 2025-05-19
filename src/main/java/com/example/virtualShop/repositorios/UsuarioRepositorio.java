@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -26,6 +27,7 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Long> {
 
     List<Usuario> findByEstadoIn(List<EstadoUsuario> estados);
 
+    Optional<Usuario> findByCorreoAndEstadoIn(String correo, List<EstadoUsuario> estados);
     Usuario findByCorreo(String correo);
     boolean existsByCorreo(String correo);
 
