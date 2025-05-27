@@ -22,6 +22,7 @@ public class Usuario {
     private String apellido;
     private String telefono;
     private String contrasena;
+    private String direccion;
 
     @Enumerated(EnumType.STRING)
     private EstadoUsuario estado;

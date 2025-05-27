@@ -38,6 +38,7 @@ public class PdfServicio {
             documento.add(new Paragraph("Nombre: " + factura.receptorNombre() + " " + factura.receptorApellido(), textoFont));
             documento.add(new Paragraph("Correo: " + factura.receptorCorreo(), textoFont));
             documento.add(new Paragraph("Teléfono: " + factura.receptorTelefono(), textoFont));
+            documento.add(new Paragraph("Dirección del cliente: " + factura.receptorDireccion(), textoFont));
             documento.add(Chunk.NEWLINE);
 
             documento.add(new Paragraph("🛒 Detalles de la Compra", tituloFont));

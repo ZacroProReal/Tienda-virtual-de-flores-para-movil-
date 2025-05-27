@@ -48,6 +48,7 @@ public class UsuarioServicio {
                 .correo(usuarioDto.correo())
                 .contrasena(contrasenaCodificada)
                 .fechaNacimiento(usuarioDto.fechaNacimiento())
+                .direccion(usuarioDto.direccion())
                 .estado(ACTIVO)
                 .rol(2)
                 .build();
