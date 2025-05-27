@@ -20,7 +20,7 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Long> {
     Usuario findByNombre (String nombre);
     Usuario findByApellido (String apellido);
     Usuario findByTelefono(String telefono);
-
+    Usuario findByDireccion(String direccion);
     Usuario findByContrasena(String contrasena);
     Usuario findByFechaNacimiento(LocalDate fechaNacimiento);
     Usuario findByRol(Integer rol);

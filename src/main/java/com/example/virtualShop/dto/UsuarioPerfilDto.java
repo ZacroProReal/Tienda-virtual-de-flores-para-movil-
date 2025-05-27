@@ -9,6 +9,7 @@ public record UsuarioPerfilDto( String nombre,
                                 String apellido,
                                 String correo,
                                 String telefono,
-                                LocalDate fechaNacimiento
+                                LocalDate fechaNacimiento,
+                                String direccion
 ) {
 }

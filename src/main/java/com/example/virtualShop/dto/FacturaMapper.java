@@ -17,6 +17,7 @@ public class FacturaMapper {
                 factura.getReceptor() != null ? factura.getReceptor().getApellido() : null,
                 factura.getReceptor() != null ? factura.getReceptor().getCorreo() : null,
                 factura.getReceptor() != null ? factura.getReceptor().getTelefono() : null,
+                factura.getReceptor() != null ? factura.getReceptor().getDireccion() : null,
                 factura.getFechaEmision(),
                 factura.getNumeroFactura(),
                 factura.getSubtotal(),

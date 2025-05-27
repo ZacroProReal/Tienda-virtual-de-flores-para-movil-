@@ -13,6 +13,7 @@ public record FacturaDto(
         String receptorApellido,
         String receptorCorreo,
         String receptorTelefono,
+        String receptorDireccion,
         LocalDateTime fechaEmision,
         String numeroFactura,
         BigDecimal subtotal,

@@ -48,6 +48,7 @@ public class UsuarioServicio {
                 .correo(usuarioDto.correo())
                 .contrasena(contrasenaCodificada)
                 .fechaNacimiento(usuarioDto.fechaNacimiento())
+                .direccion(usuarioDto.direccion())
                 .estado(ACTIVO)
                 .rol(2)
                 .build();
@@ -121,7 +122,8 @@ public class UsuarioServicio {
                 usuario.getApellido(),
                 usuario.getCorreo(),
                 usuario.getTelefono(),
-                usuario.getFechaNacimiento()
+                usuario.getFechaNacimiento(),
+                usuario.getDireccion()
         );
     }
     @Transactional

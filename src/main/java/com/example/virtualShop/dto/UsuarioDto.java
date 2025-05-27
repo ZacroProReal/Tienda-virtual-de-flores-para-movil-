@@ -10,6 +10,7 @@ public record UsuarioDto(@NotBlank String nombre,
                          @NotBlank String telefono,
                          @NotBlank String correo,
                          @NotBlank String contrasena,
+                         @NotBlank String direccion,
                          @NotBlank LocalDate fechaNacimiento
 ) {
 }
