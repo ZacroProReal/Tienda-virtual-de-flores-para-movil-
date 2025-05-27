@@ -24,15 +24,18 @@ public class Carrito {
 
     @JsonBackReference  // Evita la serialización recursiva
     private LocalDateTime fechaCreacion;
-    private String estado;
+
+    @Enumerated(EnumType.STRING)
+    private EstadoCarrito estado;
+
     private Integer cantidadGeneralProduc;
+    private Integer costoGenearl;
 
     @JsonIgnore
     @OneToOne
     @JoinColumn(name = "usuario_id", unique = true)
     private Usuario usuario;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     private List<ItemCarrito> items = new ArrayList<>();
 }

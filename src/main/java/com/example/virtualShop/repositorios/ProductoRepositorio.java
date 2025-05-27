@@ -14,6 +14,8 @@ public interface ProductoRepositorio extends JpaRepository<Producto, Long> {
                 SELECT e FROM Producto e
                 WHERE UPPER(e.nombre) = UPPER(?1)""")
     Producto findByNombre (String nombre);
+    boolean existsByNombre(String nombre);
+
     Producto findByPrecio (BigDecimal precio);
     Producto findByCantidadDisponible(Integer cantidadDisponible);
     Producto findByColorFlores (String colorFlores);

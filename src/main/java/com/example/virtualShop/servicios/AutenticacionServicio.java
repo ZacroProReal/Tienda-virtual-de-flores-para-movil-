@@ -1,11 +1,14 @@
 package com.example.virtualShop.servicios;
 
+import com.example.virtualShop.entidades.EstadoUsuario;
 import com.example.virtualShop.entidades.Usuario;
+import com.example.virtualShop.excepciones.UsuarioEliminadoException;
 import com.example.virtualShop.repositorios.UsuarioRepositorio;
 import com.example.virtualShop.seguridad.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AutenticacionServicio {
@@ -20,12 +23,63 @@ public class AutenticacionServicio {
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
     }
-
+    @Transactional
     public String autenticarYGenerarToken(String correo, String contrasena) {
         Usuario usuario = usuarioRepositorio.findByCorreo(correo);
-        if (usuario != null && passwordEncoder.matches(contrasena, usuario.getContrasena())) {
-            return jwtUtil.generarToken(correo);
+        if (usuario != null) {
+            if (usuario.getEstado() == EstadoUsuario.ELIMINADO) {
+                throw new UsuarioEliminadoException("El usuario ha sido eliminado. Por favor, restaure la cuenta para iniciar sesión.");
+            }
+
+            if (passwordEncoder.matches(contrasena, usuario.getContrasena())) {
+                return jwtUtil.generarToken(correo);
+            }
         }
         return null;
     }
+    @Transactional
+    public String solicitarTokenRestauracion(String correo) {
+        Usuario usuario = usuarioRepositorio.findByCorreo(correo);
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuario no encontrado");
+        }
+
+        if (usuario.getEstado() != EstadoUsuario.ELIMINADO) {
+            throw new IllegalArgumentException("La cuenta ya está activa");
+        }
+
+        // Generar token JWT para restauración
+        return jwtUtil.generarTokenRestauracion(correo);
+    }
+    @Transactional
+    public void restaurarCuentaConToken(String token) {
+        if (!jwtUtil.validarTokenRestauracion(token)) {
+            throw new IllegalArgumentException("Token de restauración inválido o expirado");
+        }
+
+        String correo = jwtUtil.extraerCorreo(token);
+        Usuario usuario = usuarioRepositorio.findByCorreo(correo);
+
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuario no encontrado");
+        }
+
+        if (usuario.getEstado() != EstadoUsuario.ELIMINADO) {
+            throw new IllegalArgumentException("La cuenta ya está activa");
+        }
+
+        usuario.setEstado(EstadoUsuario.ACTIVO);
+        usuarioRepositorio.save(usuario);
+    }
+    @Transactional
+    public Usuario obtenerUsuarioDesdeToken(String token) {
+        String tokenLimpio = token.replace("Bearer ", "").trim();
+        String correo = jwtUtil.extraerCorreo(tokenLimpio);
+        Usuario usuario = usuarioRepositorio.findByCorreo(correo);
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuario no encontrado con el token");
+        }
+        return usuario;
+    }
+
 }

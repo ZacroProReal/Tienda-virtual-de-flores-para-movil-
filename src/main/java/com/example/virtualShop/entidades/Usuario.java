@@ -1,7 +1,5 @@
 package com.example.virtualShop.entidades;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -19,14 +17,19 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(unique = true)
+
     private String nombre;
     private String apellido;
     private String telefono;
-    private String correo;
     private String contrasena;
+
+    @Enumerated(EnumType.STRING)
+    private EstadoUsuario estado;
+
+    @Column(unique = true)
+    private String correo;
+
     private LocalDate fechaNacimiento;
-    private boolean autenticado;
 
     @Builder.Default
     private Integer rol = 2;
