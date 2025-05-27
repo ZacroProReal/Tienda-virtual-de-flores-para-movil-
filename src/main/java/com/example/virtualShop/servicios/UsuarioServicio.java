@@ -122,7 +122,8 @@ public class UsuarioServicio {
                 usuario.getApellido(),
                 usuario.getCorreo(),
                 usuario.getTelefono(),
-                usuario.getFechaNacimiento()
+                usuario.getFechaNacimiento(),
+                usuario.getDireccion()
         );
     }
     @Transactional
